@@ -30,10 +30,10 @@ fn test_default_statement() {
 
 #[test]
 fn test_hash_map_switch_with_default() {
-    let hashmap_test: HashMap<u32, Option<String>> = HashMap::from([
-        (1, Some("1".into())),
-        (2, Some("2".into())),
-        (3, Some("3".into()))
+    let hashmap_test: HashMap<u32, String> = HashMap::from([
+        (1, "1".into()),
+        (2, "2".into()),
+        (3, "3".into())
     ]);
 
     let result = Switch::<String, u32>::make(3_u32)

@@ -12,7 +12,7 @@ impl<R, V: PartialEq + Clone> Switch<R, V> {
     }
 
     pub fn into_hash_map_switch(
-        &self, hash_map: HashMap<V, Option<R>>
+        &self, hash_map: HashMap<V, R>
     ) -> HashMapSwitch<R, V> {
         HashMapSwitch::make(self.value.clone())
             .hash_case(hash_map)
@@ -48,11 +48,11 @@ impl <R, V: PartialEq> HashMapSwitch<R, V> {
         Self { value, result: None }
     }
 
-    pub fn hash_case(mut self, hash_map: HashMap<V, Option<R>>) -> Self {
+    pub fn hash_case(mut self, hash_map: HashMap<V, R>) -> Self {
         hash_map
             .into_iter()
-            .for_each(|v: (V, Option<R>)| {
-                if v.0 == self.value { self.result = v.1 }
+            .for_each(|v: (V, R)| {
+                if v.0 == self.value { self.result = Some(v.1) }
             });
         return self;
     }
