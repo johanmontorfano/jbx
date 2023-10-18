@@ -1,10 +1,12 @@
-pub struct Switch<R, V: PartialEq> {
+use std::collections::HashMap;
+
+/// Works similar to a JavaScript switch...case statement.
+pub struct Switch<R, V: PartialEq + Clone> {
     pub value: V,
     pub result: Option<R>
 }
 
-/// Works similar to a JavaScript switch...case statement.
-impl<R, V: PartialEq> Switch<R, V> {
+impl<R, V: PartialEq + Clone> Switch<R, V> {
     pub fn make(value: V) -> Self {
         Self { value, result: None }
     }
@@ -12,7 +14,7 @@ impl<R, V: PartialEq> Switch<R, V> {
     pub fn into_hash_map_switch(
         &self, hash_map: HashMap<V, Option<R>>
     ) -> HashMapSwitch<R, V> {
-        HashMapSwitch::make(self.value)
+        HashMapSwitch::make(self.value.clone())
             .hash_case(hash_map)
     }
 
@@ -36,17 +38,23 @@ impl<R, V: PartialEq> Switch<R, V> {
 /// HashMap checking. Thus, HashMapSwitch<R, V> requires HashMap<V, Option<R>>.
 /// 
 /// Using `default` is still possible with this Switch type.
+pub struct HashMapSwitch<R, V: PartialEq> {
+    value: V,
+    result: Option<R>
+}
+
 impl <R, V: PartialEq> HashMapSwitch<R, V> {
     pub fn make(value: V) -> Self {
         Self { value, result: None }
     }
 
-    pub fn hash_case(&self, hash_map: HashMap<V, Option<R>>) -> Self {
+    pub fn hash_case(mut self, hash_map: HashMap<V, Option<R>>) -> Self {
         hash_map
             .into_iter()
             .for_each(|v: (V, Option<R>)| {
                 if v.0 == self.value { self.result = v.1 }
             });
+        return self;
     }
 
     /// Runs if result is still `None`. And return the result.

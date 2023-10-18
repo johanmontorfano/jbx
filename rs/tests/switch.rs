@@ -1,4 +1,5 @@
 use jbx::switch::Switch;
+use std::collections::HashMap;
 
 /// If making a Switch is not possible, the test would just fail.
 #[test]
@@ -25,4 +26,19 @@ fn test_default_statement() {
         .default(|| { Some("X".into()) })
         .unwrap();
     assert_eq!(String::from("X"), result);
+}
+
+#[test]
+fn test_hash_map_switch_with_default() {
+    let hashmap_test: HashMap<u32, Option<String>> = HashMap::from([
+        (1, Some("1".into())),
+        (2, Some("2".into())),
+        (3, Some("3".into()))
+    ]);
+
+    let result = Switch::<String, u32>::make(3_u32)
+        .into_hash_map_switch(hashmap_test)
+        .default(|| { Some("X".into()) })
+        .unwrap();
+    assert_eq!(String::from("3"), result);
 }
