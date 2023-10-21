@@ -1,0 +1,9 @@
+{
+    "workspaces": [
+        "js/"
+    ],
+    "devDependencies": {
+        "@types/aes-js": "^3.1.3",
+        "aes-js": "^3.1.2"
+    }
+}

@@ -1,6 +1,14 @@
+.nvim
+.git
+
+# RUST IGNORES
 rs/target
 rs/Cargo.lock
 target/
 Cargo.lock
 
-
+# JS IGNORES
+js/tests/.env
+js/node_modules
+js/pnpm-lock.yaml
+pnpm-lock.yaml
