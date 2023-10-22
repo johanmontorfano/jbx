@@ -82,14 +82,16 @@ export class StaticReference {
     }
 
     /** Upload data that needs to be uploaded to the blockchain.
-    * @returns The dataset identifier (CID) */
-    async commit() {
+     * @param name Name of the data uploaded. It can be used later to determine
+     * what datasets corresponds to. It's however optional.
+     * @returns The dataset identifier (CID) */
+    async commit(name?: string) {
         if (this.cid !== undefined)
             throw new Error("Tried to edit a already saved static resource.");
         
         const cid = await this.FS3Instance.uploadFiles(
             [...this.uploadableFiles.map(b => ({...b[0], content: b[1]}))], 
-            "arma-unmut-upload"
+            name || ""
         );
 
         return cid;

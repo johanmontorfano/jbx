@@ -86,8 +86,11 @@ export class Reference {
         ).retrieve();
     }
 
-    /** Upload data that needs to be uploaded to the blockchain. */
-    async commit() {
+    /** Upload data that needs to be uploaded to the blockchain.
+    * @param name Name of the upload that can be retrieved later. It can be used
+    * to determine what datasets corresponds to. It's however optional. 
+    * @returns The CID that refers to the uploaded data. */
+    async commit(name?: string) {
         // If we are working with a new reference, the private key is already 
         // provided locally. Otherwise, we need to retrieve it back from the 
         // blockchain.
@@ -109,7 +112,7 @@ export class Reference {
                 ...PRIV_KEY_META,
                 content: encryptAES(this.crypto.key, referencePrivateKey) 
             }],
-            "arma-mut-upload"
+            name || ""
         );
 
         // If the current reference is new, we do not have to go through the 
